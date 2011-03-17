@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<table border="1">
+    {% for specimen in specimens %}
+    <tr>
+        <td>{{ specimen }}
+        <td>{{ specimen.gender }}
+        <td>{{ specimen.collection_date }}
+        <td>{{ specimen.location }}
+        <td>{{ specimen.tubule_set.all }}
+{% endfor %}
+</table>
+
+{% endblock %}
