@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<h2>General descriptive table</h2>
 <table border="1">
     <tr>
         <th>Specimen</th>
         <th>Gender</th>
         <th>Collection date</th>
         <th>Location</th>
-        <th>Tubules</th>
+        <th colspan="4">Tubules</th>
     </tr>
     {% for specimen in specimens %}
     <tr>
@@ -15,9 +16,49 @@
         <td>{{ specimen.gender }}</td>
         <td>{{ specimen.collection_date }}</td>
         <td>{{ specimen.location }}</td>
-        <td>{{ specimen.tubule_set.all }}</td>
+        <td>
+            {% if specimen.tubule_set.all %}
+            <table border="1">
+                <tr>
+                    <th>Photo</th>
+                    <th>Cross section</th>
+                    <th>Germ layer</th>
+                    <th>GLA index</th>
+                </tr>
+                {% for tubule in specimen.tubule_set.all %} 
+                <tr>
+                    <td>{{ tubule.photo }}</td>
+                    <td>{{ tubule.cross_section }}</td>
+                    <td>{{ tubule.germ_layer }}</td>
+                    <td>{{ tubule.gla_index }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </td>
     </tr>
 {% endfor %}
+</table>
+
+<h2>Data grouped by date</h2>
+
+<table border="1">
+    <tr>
+        <th>Date</th>
+        <th>Cross sections mean</th>
+        <th>Germ layers mean</th>
+        <th>GLA indexes mean</th>
+    </tr>
+    {% for avg in means_by_date %}
+    {% if avg.cross_sections_mean__avg %}
+    <tr>
+        <td>{{ avg.collection_date }}</td>
+        <td>{{ avg.cross_sections_mean__avg|floatformat:0 }}</td>
+        <td>{{ avg.germ_layers_mean__avg|floatformat:0 }}</td>
+        <td>{{ avg.gla_indexes_mean__avg|floatformat:2 }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
 </table>
 
 {% endblock %}

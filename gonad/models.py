@@ -159,7 +159,6 @@ class Section(SectionPhoto):
         return '%s (%s)' % (self.filename, self.specimen.identifier)
 
 
-
 # Signals
 def calculate_gla(signal, instance, sender, **kwargs):
     '''Calculates the germ layer area index.'''
@@ -169,6 +168,12 @@ def calculate_gla(signal, instance, sender, **kwargs):
 
 def tubule_means(signal, instance, sender, **kwargs):
     '''Calculates the mean of tubules measurements for a specimen.'''
+    # XXX Use Django aggregate function?
+    # >>> from django.db.models import Avg
+    # >>> instance.specimen.tubule_set.aggregate(Avg('cross_section'))
+    # see http://docs.djangoproject.com/en/dev/topics/db/aggregation/
+    # Avg, Count, Max, Min, StdDev, Sum, Variance can be used.
+
     # Specimen.
     sp = instance.specimen
     # Tubules.
