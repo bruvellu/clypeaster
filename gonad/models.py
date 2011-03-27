@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from numpy import array, mean, std
 
 GENDERS = (
         ('M', 'Male'),
@@ -12,6 +13,7 @@ OBJECTIVES = (
         ('40x', '40x'),
         ('100x', '100x'),
     )
+
 
 class Specimen(models.Model):
     '''General characteristics of a sea biscuit speciment.'''
@@ -50,7 +52,28 @@ class Specimen(models.Model):
     consensus_stage = models.CharField(max_length=300, blank=True,
             default='no data', help_text='Consensus gonadal stage of the ' 
             'specimen generate by the classification of individual slides.')
-    # TODO Create fields to hold average + sd values from tubules.
+    # Mean and standard deviation values from tubules.
+    cross_sections_mean = models.FloatField('mean of cross sections areas', 
+            null=True, blank=True, help_text='Mean of the cross sections areas'
+            ' in µm^2 of the different tubule\'s from the specimen.')
+    cross_sections_sd = models.FloatField('sd of cross sections areas', 
+            null=True, blank=True, help_text='Standard deviation of the cross '
+            'sections areas in µm^2 of different tubule\'s from the '
+            'specimen.')
+    germ_layers_mean = models.FloatField('mean of germ layers areas', 
+            null=True, blank=True, help_text='Mean of germ layers areas in '
+            'µm^2.')
+    germ_layers_sd = models.FloatField('sd of germ layers areas', null=True, 
+            blank=True, help_text='Standard deviation of germ layers areas in '
+            'µm^2.')
+    gla_indexes_mean = models.FloatField('mean of germ layers areas indexes', 
+            null=True, blank=True, help_text='Mean of indexes showing the '
+            'proportion of the germ layer area in the total area of the '
+            'tubule\'s cross section.')
+    gla_indexes_sd = models.FloatField('sd of germ layers areas indexes', 
+            null=True, blank=True, help_text='Standard deviation of indexes '
+            'showing the proportion of the germ layer area in the total area '
+            'of the tubule\'s cross section.')
 
     def __unicode__(self):
         if self.gender:
@@ -140,11 +163,33 @@ class Section(SectionPhoto):
 # Signals
 def calculate_gla(signal, instance, sender, **kwargs):
     '''Calculates the germ layer area index.'''
-    gla = instance.germ_layer / instance.cross_section
-    instance.gla = gla
+    if instance.cross_section and instance.germ_layer:
+        gla = instance.germ_layer / instance.cross_section
+        instance.gla_index = gla
 
 def tubule_means(signal, instance, sender, **kwargs):
     '''Calculates the mean of tubules measurements for a specimen.'''
+    # Specimen.
+    sp = instance.specimen
+    # Tubules.
+    tubules = sp.tubule_set.all()
+    # cross_section
+    cross_section_array = array([each.cross_section for each in tubules if 
+        each.cross_section])
+    sp.cross_sections_mean = cross_section_array.mean()
+    sp.cross_sections_sd = cross_section_array.std()
+    # germ_layer
+    germ_layer_array = array([each.germ_layer for each in tubules if 
+        each.germ_layer])
+    sp.germ_layers_mean = germ_layer_array.mean()
+    sp.germ_layers_sd = germ_layer_array.std()
+    # gla_index
+    gla_index_array = array([each.gla_index for each in tubules if 
+        each.gla_index])
+    sp.gla_indexes_mean = gla_index_array.mean()
+    sp.gla_indexes_sd = gla_index_array.std()
+    # Save specimen.
+    sp.save()
 
 models.signals.pre_save.connect(calculate_gla, sender=Tubule)
 models.signals.post_save.connect(tubule_means, sender=Tubule)

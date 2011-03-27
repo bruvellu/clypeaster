@@ -2,13 +2,21 @@
 {% block content %}
 
 <table border="1">
+    <tr>
+        <th>Specimen</th>
+        <th>Gender</th>
+        <th>Collection date</th>
+        <th>Location</th>
+        <th>Tubules</th>
+    </tr>
     {% for specimen in specimens %}
     <tr>
-        <td>{{ specimen }}
-        <td>{{ specimen.gender }}
-        <td>{{ specimen.collection_date }}
-        <td>{{ specimen.location }}
-        <td>{{ specimen.tubule_set.all }}
+        <td>{{ specimen }}</td>
+        <td>{{ specimen.gender }}</td>
+        <td>{{ specimen.collection_date }}</td>
+        <td>{{ specimen.location }}</td>
+        <td>{{ specimen.tubule_set.all }}</td>
+    </tr>
 {% endfor %}
 </table>
 
