@@ -7,15 +7,13 @@ from gonad.views import *
 from django.contrib import admin
 admin.autodiscover()
 
-site_media = os.path.join(
-        os.path.dirname(__file__), 'media'
-        )
+static = os.path.join(os.path.dirname(__file__), 'static')
 
 urlpatterns = patterns('',
         (r'^$', main_page),
         # Admin
         (r'^admin/', include(admin.site.urls)),
         # Site media
-        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': site_media}),
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': static}),
 )

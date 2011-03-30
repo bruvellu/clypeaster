@@ -17,9 +17,10 @@ OBJECTIVES = (
 
 class Specimen(models.Model):
     '''General characteristics of a sea biscuit speciment.'''
-    oral = models.ImageField('oral side', upload_to='/media/morphometrics', 
+    oral = models.ImageField('oral side', upload_to='/static/morphometrics', 
             help_text='Photograph of specimen\'s oral side.')
-    aboral = models.ImageField('aboral side', upload_to='/media/morphometrics', 
+    aboral = models.ImageField('aboral side', 
+            upload_to='/static/morphometrics',
             help_text='Photograph of specimen\'s aboral side.')
     identifier = models.CharField(max_length=10, unique=True,
             help_text='Unique identification key of the specimen.')
@@ -110,8 +111,9 @@ class SectionPhoto(models.Model):
 
 class Tubule(SectionPhoto):
     '''Photo of a gonadal tubule.'''
-    photo = models.ImageField('photo of a tubule', upload_to='/media/tubules',
-            help_text='Photomicrograph of a gonadal tubule.')
+    photo = models.ImageField('photo of the tubule', 
+            upload_to='/static/tubules',
+            help_text='Photomicrograph of the gonadal tubule.')
     specimen = models.ForeignKey(Specimen,
             verbose_name='specimen of this tubule', help_text='Specimen from '
             'which the gonadal sample was taken.')
@@ -136,7 +138,7 @@ class Tubule(SectionPhoto):
 class Section(SectionPhoto):
     '''Photo of a gonadal histological section.'''
     photo = models.ImageField('photo of gonadal tissue', 
-            upload_to='/media/sections', help_text='A general section of '
+            upload_to='/static/sections', help_text='A general section of '
             'gonadal tissue.')
     specimen = models.ForeignKey(Specimen,
             verbose_name='specimen of this section', help_text='Specimen from '
@@ -168,11 +170,16 @@ def calculate_gla(signal, instance, sender, **kwargs):
 
 def tubule_means(signal, instance, sender, **kwargs):
     '''Calculates the mean of tubules measurements for a specimen.'''
-    # XXX Use Django aggregate function?
-    # >>> from django.db.models import Avg
-    # >>> instance.specimen.tubule_set.aggregate(Avg('cross_section'))
+    # TODO Use Django aggregate function?
     # see http://docs.djangoproject.com/en/dev/topics/db/aggregation/
     # Avg, Count, Max, Min, StdDev, Sum, Variance can be used.
+    # >>>
+    # >>> from django.db.models import Avg
+    # >>> instance.specimen.tubule_set.aggregate(Avg('cross_section'))
+    # >>> instance.specimen.tubule_set.aggregate(StdDev('cross_section'))
+    # >>> django.db.utils.DatabaseError: no such function: STDDEV_POP
+    # XXX Sqlite does not support stddev, staying with numpy for now since I 
+    # don't want to switch to PostgreSQL.
 
     # Specimen.
     sp = instance.specimen

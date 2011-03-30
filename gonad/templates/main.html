@@ -27,7 +27,7 @@
                 </tr>
                 {% for tubule in specimen.tubule_set.all %} 
                 <tr>
-                    <td>{{ tubule.photo }}</td>
+                    <td><a href="{{ MEDIA_URL }}{{ tubule.photo }}">{{ tubule.filename }}</a></td>
                     <td>{{ tubule.cross_section }}</td>
                     <td>{{ tubule.germ_layer }}</td>
                     <td>{{ tubule.gla_index }}</td>
