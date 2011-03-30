@@ -10,10 +10,13 @@ admin.autodiscover()
 static = os.path.join(os.path.dirname(__file__), 'static')
 
 urlpatterns = patterns('',
+        # Home.
         (r'^$', main_page),
-        # Admin
+        # Where you stage gonads.
+        (r'^staging/$', staging_page),
+        # Admin.
         (r'^admin/', include(admin.site.urls)),
-        # Site media
+        # Site media.
         (r'^static/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': static}),
 )

@@ -18,3 +18,17 @@ def main_page(request):
         'means_by_date': means_by_date,
         })
     return render_to_response('main.html', variables)
+
+# Staging page
+def staging_page(request):
+    '''Page where you can look at a random photo and stage it.
+    
+    The section on the left with the fields stage, preliminary stage and 
+    observations on the right. So you can take notes and save.
+    '''
+    # TODO How do you hide the image location (showing the month)?
+    # TODO Consider using Javascript to reload the images?
+    variables = RequestContext(request, {
+        'specimens': specimens,
+        })
+    return render_to_response('staging.html', variables)
