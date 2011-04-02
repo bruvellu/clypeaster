@@ -8,6 +8,7 @@
         <th>Gender</th>
         <th>Collection date</th>
         <th>Location</th>
+        <th>Sections</th>
         <th colspan="4">Tubules</th>
     </tr>
     {% for specimen in specimens %}
@@ -16,6 +17,12 @@
         <td>{{ specimen.gender }}</td>
         <td>{{ specimen.collection_date }}</td>
         <td>{{ specimen.location }}</td>
+        <td>{% if specimen.section_set.all %}
+            {% for section in specimen.section_set.all %}
+            <a href="{{ MEDIA_URL }}{{ section.photo }}">{{ section.filename }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            {% endif %}
+        </td>
         <td>
             {% if specimen.tubule_set.all %}
             <table border="1">
