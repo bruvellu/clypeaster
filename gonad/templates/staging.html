@@ -2,5 +2,15 @@
 
 {% block content %}
 <h2>Staging area</h2>
-Nothing yet.
+<div>
+    <img src="{{ MEDIA_URL }}{{ section.photo }}" width="100%" />
+</div>
+<div>
+    {{ section.objective }} {% if section.pas %}| PAS{% endif %}
+    <form action="." method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="hidden" value="{{ section.id }}" name="section" />
+        <input type="submit" value="Save" />
+    </form>
+</div>
 {% endblock %}

@@ -28,7 +28,25 @@ def staging_page(request):
     '''
     # TODO How do you hide the image location (showing the month)?
     # TODO Consider using Javascript to reload the images?
+    if request.method == 'POST':
+        section = Section.objects.get(id=request.POST['section'])
+        print request.POST
+        form = StagingForm(request.POST)
+        if form.is_valid():
+            print form.cleaned_data
+            section.isgreat = form.cleaned_data['isgreat']
+            section.notes = form.cleaned_data['notes']
+            section.uncertain = form.cleaned_data['uncertain']
+            section.pre_stage = form.cleaned_data['pre_stage']
+            if form.cleaned_data['stage']:
+                section.stage = Stage.objects.get(
+                        name=form.cleaned_data['stage'])
+            print section
+    else:
+        section = Section.objects.filter(pre_stage='').order_by('?')[0]
+        form = StagingForm(instance=section)
     variables = RequestContext(request, {
-        'specimens': specimens,
+        'section': section,
+        'form': form,
         })
     return render_to_response('staging.html', variables)
