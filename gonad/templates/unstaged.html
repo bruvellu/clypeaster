@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Unstaged sections</h2>
+{% if sections %}
+<ul>
+    {% for section in sections %}
+    <li>
+    {{ section.filename|slice:'17:' }}
+    <form action="/staging/" method="post">{% csrf_token %}
+        <input type="hidden" value="{{ section.id }}" name="section" />
+        <input type="hidden" value="on" name="edit" />
+        <input type="submit" value="Edit" />
+    </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+No unstaged sections!
+{% endif %}
+{% endblock %}

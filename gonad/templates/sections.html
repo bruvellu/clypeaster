@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ status|capfirst }} sections</h2>
+{% if sections %}
+
+{% if status == 'prestaged' %}
+{% regroup sections by pre_stage as groups %}
+{% else %}
+{% regroup sections by stage as groups %}
+{% endif %}
+
+{% for stage in groups %}
+<h3>{{ stage.grouper }}</h3>
+<ul>
+    {% for section in stage.list %}
+    <li>
+    {{ section.filename }}
+    <form action="/staging/" method="post">{% csrf_token %}
+        <input type="hidden" value="{{ section.id }}" name="section" />
+        <input type="hidden" value="on" name="edit" />
+        <input type="submit" value="Edit" />
+    </form>
+    </li>
+    {% endfor %}
+</ul>
+{% endfor %}
+
+{% else %}
+No {{ status }} sections!
+{% endif %}
+
+{% endblock %}

@@ -50,8 +50,12 @@ def staging_page(request):
     return render_to_response('staging.html', variables)
 
 def unstaged_page(request):
-    '''List of unstaged sections.'''
-    sections = Section.objects.filter(pre_stage='', stage=None)
+    '''List of unstaged sections.
+    
+    Sections are in random order. Date and id are hidden to avoid bias during 
+    classification of gonadal stage.
+    '''
+    sections = Section.objects.filter(pre_stage='', stage=None).order_by('?')
     variables = RequestContext(request, {
         'sections': sections,
         })
@@ -62,13 +66,15 @@ def prestaged_page(request):
     sections = Section.objects.filter(stage=None).exclude(pre_stage='')
     variables = RequestContext(request, {
         'sections': sections,
+        'status': u'prestaged',
         })
-    return render_to_response('prestaged.html', variables)
+    return render_to_response('sections.html', variables)
 
 def staged_page(request):
     '''List of staged sections.'''
     sections = Section.objects.exclude(stage=None)
     variables = RequestContext(request, {
         'sections': sections,
+        'status': u'staged',
         })
-    return render_to_response('staged.html', variables)
+    return render_to_response('sections.html', variables)
