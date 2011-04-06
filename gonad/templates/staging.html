@@ -1,10 +1,18 @@
 {% extends 'base.html' %}
+{% load thumbnail %}
 
 {% block content %}
 <h2>Staging area</h2>
 <h3>{{ ratio }}% complete ({{ left }} of {{ total }} histological sections)</h3>
 <div>
-    <img src="{{ MEDIA_URL }}{{ section.photo }}" width="100%" />
+    {% thumbnail section.photo "1250" crop="center" as im %}
+    <a href="{{ MEDIA_URL }}{{ section.photo }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+    {% empty %}
+    [no image]
+    {% endthumbnail %}
+
+
+
 </div>
 <div>
     {{ section.objective }} {% if section.pas %}| PAS{% endif %}

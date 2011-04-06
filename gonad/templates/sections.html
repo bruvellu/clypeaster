@@ -14,16 +14,18 @@
 {% for stage in groups %}
 <h3>{{ stage.grouper }}</h3>
 {% for section in stage.list %}
-{% thumbnail section.photo "200x150" crop="center" as im %}
-    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+<div class="thumb">
+    {% thumbnail section.photo "200x150" crop="center" as im %}
+    <a rel="section" href="{{ MEDIA_URL }}{{ section.photo }}" title="{{ section.filename }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ section.filename }}" title="{{ section.notes }}"></a>
     {% empty %}
     [no image]
-{% endthumbnail %} 
-<form action="/staging/" method="post">{% csrf_token %}
-    <input type="hidden" value="{{ section.id }}" name="section" />
-    <input type="hidden" value="on" name="edit" />
-    <input type="submit" value="Edit" />
-</form>
+    {% endthumbnail %}
+    <form action="/staging/" method="post">{% csrf_token %}
+        <input type="hidden" value="{{ section.id }}" name="section" />
+        <input type="hidden" value="on" name="edit" />
+        <input type="submit" value="Edit" />
+    </form>
+</div>
 {% endfor %}
 {% endfor %}
 
