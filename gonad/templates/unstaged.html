@@ -6,7 +6,7 @@
 <ul>
     {% for section in sections %}
     <li>
-    {{ section.filename|slice:'17:' }}
+    {{ section.filename|slice:'-16:' }}
     <form action="/staging/" method="post">{% csrf_token %}
         <input type="hidden" value="{{ section.id }}" name="section" />
         <input type="hidden" value="on" name="edit" />
