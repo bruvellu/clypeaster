@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.forms import ModelForm
 from numpy import array, mean, std
 
 GENDERS = (
@@ -159,6 +160,13 @@ class Section(SectionPhoto):
 
     def __unicode__(self):
         return '%s (%s)' % (self.filename, self.specimen.identifier)
+
+
+class StagingForm(ModelForm):
+    '''Main form for staging sections.'''
+    class Meta:
+        model = Section
+        fields = ('isgreat', 'pre_stage', 'stage', 'uncertain', 'notes',)
 
 
 # Signals

@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>Staging area</h2>
+<h3>{{ ratio }}% complete ({{ left }} of {{ total }} histological sections)</h3>
 <div>
     <img src="{{ MEDIA_URL }}{{ section.photo }}" width="100%" />
 </div>
@@ -10,6 +11,7 @@
     <form action="." method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="hidden" value="{{ section.id }}" name="section" />
+        <input type="hidden" value="" name="edit" />
         <input type="submit" value="Save" />
     </form>
 </div>

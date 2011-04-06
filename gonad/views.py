@@ -21,32 +21,54 @@ def main_page(request):
 
 # Staging page
 def staging_page(request):
-    '''Page where you can look at a random photo and stage it.
-    
-    The section on the left with the fields stage, preliminary stage and 
-    observations on the right. So you can take notes and save.
-    '''
-    # TODO How do you hide the image location (showing the month)?
-    # TODO Consider using Javascript to reload the images?
+    '''Page where you can look at a random photo and stage it.'''
     if request.method == 'POST':
-        section = Section.objects.get(id=request.POST['section'])
         print request.POST
-        form = StagingForm(request.POST)
-        if form.is_valid():
-            print form.cleaned_data
-            section.isgreat = form.cleaned_data['isgreat']
-            section.notes = form.cleaned_data['notes']
-            section.uncertain = form.cleaned_data['uncertain']
-            section.pre_stage = form.cleaned_data['pre_stage']
-            if form.cleaned_data['stage']:
-                section.stage = Stage.objects.get(
-                        name=form.cleaned_data['stage'])
-            print section
+        section = Section.objects.get(id=request.POST['section'])
+        # Differentiates between a manual edit and a random sample.
+        # If it is a manual edit don't use POST to populate fields.
+        if request.POST['edit']:
+            form = StagingForm(instance=section)
+        else:
+            form = StagingForm(request.POST, instance=section)
+            if form.is_valid():
+                form.save()
     else:
-        section = Section.objects.filter(pre_stage='').order_by('?')[0]
+        section = Section.objects.filter(stage=None).order_by('?')[0]
         form = StagingForm(instance=section)
+    # Some stats just for fun.
+    left = Section.objects.exclude(stage=None).count()
+    total = Section.objects.count()
+    ratio = left / total * 100
     variables = RequestContext(request, {
         'section': section,
         'form': form,
+        'ratio': ratio,
+        'left': left,
+        'total': total,
         })
     return render_to_response('staging.html', variables)
+
+def unstaged_page(request):
+    '''List of unstaged sections.'''
+    sections = Section.objects.filter(pre_stage='', stage=None)
+    variables = RequestContext(request, {
+        'sections': sections,
+        })
+    return render_to_response('unstaged.html', variables)
+
+def prestaged_page(request):
+    '''List of prestaged sections.'''
+    sections = Section.objects.filter(stage=None).exclude(pre_stage='')
+    variables = RequestContext(request, {
+        'sections': sections,
+        })
+    return render_to_response('prestaged.html', variables)
+
+def staged_page(request):
+    '''List of staged sections.'''
+    sections = Section.objects.exclude(stage=None)
+    variables = RequestContext(request, {
+        'sections': sections,
+        })
+    return render_to_response('staged.html', variables)

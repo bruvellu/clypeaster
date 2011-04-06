@@ -14,6 +14,12 @@ urlpatterns = patterns('',
         (r'^$', main_page),
         # Where you stage gonads.
         (r'^staging/$', staging_page),
+        # List of unstaged sections.
+        (r'^unstaged/$', unstaged_page),
+        # List of pre-staged sections.
+        (r'^prestaged/$', prestaged_page),
+        # List of staged sections.
+        (r'^staged/$', staged_page),
         # Admin.
         (r'^admin/', include(admin.site.urls)),
         # Site media.
