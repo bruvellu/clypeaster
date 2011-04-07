@@ -1,4 +1,4 @@
-Attempt to use Django as a tool to organize and analyze scientific data.
+This is an attempt to use Django as a tool to organize and analyze scientific data.
 
 #Why?
 
@@ -16,11 +16,11 @@ Features that made me do it:
 
 I am analyzing histological sections of gonadal tissue from an echinoderm (spiny marine invertebrate). I basically have a bunch of photomicrographs which need to be staged (1831 to be precise), information about the collected specimen (date, height, gender), and measurements of gonadal tubules from a different set of photomicrographs.
 
-In order to accomplish my objective I had to: design the database to accomodate original data; import data into the project; create the views/templates to analyze data; create views to process results (stats and plots); __next step__?
+In order to accomplish my objective I had to: design the database to accomodate original data; import data into the project; create the views/templates to analyze data; create views to process results (stats and plots); _next step_?
 
 ##Database Design
 
-__To be written...__
+_To be written..._
 
 ##Data Input
 
@@ -28,23 +28,23 @@ Simple Python script reading CSV files and saving in the database.
 
 ##Analysis
 
-Staging is a daunting task where you need to be fully aware of sampling variation in order to trace the arbitrary line between stages. So I need to make observations and take notes for each photo and be able to compile this information. Also, It is better if I do not know the date/identification of the photo I am observing to avoid bias (eg, it is common to have mature gonads on summer, so knowing this could induce an errouneous classification) and make the observations in random order, for the same reasons. The regular approach of opening images (typically organized by folder/date) on a regular file browser could undermine the analysis.
+Staging is a daunting task where you need to be fully aware of sampling variation in order to trace the arbitrary line between stages. So I need to make observations and take notes for each photo and be able to compile this information. Also, It is better if I do not know the date/identification of the photo I am observing to avoid bias (eg, it is common to have mature gonads on summer, so knowing this could induce an errouneous classification) and make the observations in random order, for the same reason. The regular approach of opening images (typically organized by folder/date) on a regular file browser could undermine the analysis.
 
 For this I build a view which shows a random section screen-wide without any identification visible with a form below to fill with notes, the gonadal stage, and mark if the stage is uncertain or the image is good for publication.
 
-__To be continued...__
+_To be continued..._
 
 ##Processing Results
 
-__To be written...__
+_To be written..._
 
 ###Stats
 
-__To be written...__
+_To be written..._
 
 ###Plotting
 
-__To be written...__
+_To be written..._
 
 #Meta Case
 
