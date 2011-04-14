@@ -49,6 +49,7 @@ def staging_page(request):
         })
     return render_to_response('staging.html', variables)
 
+# List of unstaged files
 def unstaged_page(request):
     '''List of unstaged sections.
     
@@ -61,6 +62,7 @@ def unstaged_page(request):
         })
     return render_to_response('unstaged.html', variables)
 
+# List of pre-staged files
 def prestaged_page(request):
     '''List of prestaged sections.'''
     sections = Section.objects.filter(stage=None).exclude(pre_stage='')
@@ -70,6 +72,7 @@ def prestaged_page(request):
         })
     return render_to_response('sections.html', variables)
 
+# List of staged files
 def staged_page(request):
     '''List of staged sections.'''
     sections = Section.objects.exclude(stage=None)
@@ -78,3 +81,21 @@ def staged_page(request):
         'status': u'staged',
         })
     return render_to_response('sections.html', variables)
+
+# Page of a gonadal tubule
+def tubule_page(request, id):
+    '''Standard page for a tubule.'''
+    tubule = Tubule.objects.get(id=id)
+    variables = RequestContext(request, {
+        'tubule': tubule,
+        })
+    return render_to_response('tubule.html', variables)
+
+# Page of a gonadal section
+def section_page(request, id):
+    '''Standard page for a tubule.'''
+    section = Section.objects.get(id=id)
+    variables = RequestContext(request, {
+        'section': section,
+        })
+    return render_to_response('section.html', variables)

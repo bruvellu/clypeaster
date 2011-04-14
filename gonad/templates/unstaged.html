@@ -6,6 +6,7 @@
 <ul>
     {% for section in sections %}
     <li>
+    {% comment %} Hide date from filename {% endcomment %}
     {{ section.filename|slice:'-16:' }}
     <form action="/staging/" method="post">{% csrf_token %}
         <input type="hidden" value="{{ section.id }}" name="section" />

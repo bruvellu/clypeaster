@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block content %}
+<h2>Tubule {{ tubule.filename }} ({{ tubule.id }})</h2>
+<div>
+    {% thumbnail tubule.photo "1250" crop="center" as im %}
+    <a href="{{ MEDIA_URL }}{{ tubule.photo }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+    {% empty %}
+    [no image]
+    {% endthumbnail %}
+</div>
+<div>
+    <strong>Filename:</strong> {{ tubule.filename }}<br>
+    <strong>Objective:</strong> {{ tubule.objective }}<br>
+    <strong>Is great:</strong> {{ tubule.isgreat }}<br>
+    <strong>Specimen:</strong> {{ tubule.specimen }}<br>
+    <strong>Germ layer index:</strong> {{ tubule.gla_index|floatformat:2 }}<br>
+    <strong>Cross section area:</strong> {{ tubule.cross_section|floatformat:0 }} µm<sup>2</sup><br>
+    <strong>Germ layer area:</strong> {{ tubule.germ_layer|floatformat:0 }} µm<sup>2</sup>
+</div>
+{% endblock %}

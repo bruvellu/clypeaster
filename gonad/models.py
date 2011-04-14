@@ -134,6 +134,10 @@ class Tubule(SectionPhoto):
     def __unicode__(self):
         return '%s (%s)' % (self.filename, self.specimen.identifier)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('tubule_url', [str(self.id)])
+
 
 class Section(SectionPhoto):
     '''Photo of a gonadal histological section.'''
@@ -159,6 +163,10 @@ class Section(SectionPhoto):
 
     def __unicode__(self):
         return '%s (%s)' % (self.filename, self.specimen.identifier)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('section_url', [str(self.id)])
 
 
 class StagingForm(ModelForm):

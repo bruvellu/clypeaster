@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block content %}
+<h2>Section {{ section.filename }} ({{ section.id }})</h2>
+<div>
+    {% thumbnail section.photo "1250" crop="center" as im %}
+    <a href="{{ MEDIA_URL }}{{ section.photo }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+    {% empty %}
+    [no image]
+    {% endthumbnail %}
+</div>
+<div>
+    <strong>Filename:</strong> {{ section.filename }}<br>
+    <strong>Objective:</strong> {{ section.objective }}<br>
+    <strong>Staining:</strong> {% if section.pas %}PAS{% else %}Toluidine{% endif %}<br>
+    <strong>Is great:</strong> {{ section.isgreat }}<br>
+    <strong>Specimen:</strong> {{ section.specimen }}<br>
+    <strong>Pre-stage:</strong> {{ section.pre_stage }}<br>
+    <strong>Stage:</strong> {{ section.stage }}<br>
+    <strong>Notes:</strong> {{ section.notes }}<br>
+    <strong>Uncertain:</strong> {{ section.uncertain }}<br>
+    <form action="/staging/" method="post">{% csrf_token %}
+        <input type="hidden" value="{{ section.id }}" name="section" />
+        <input type="hidden" value="on" name="edit" />
+        <input type="submit" value="Edit" />
+    </form>
+</div>
+{% endblock %}
