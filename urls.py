@@ -33,5 +33,5 @@ urlpatterns = patterns('',
         (r'^static/(?P<path>.*)$', 'django.views.static.serve',
             {'document_root': static}),
         # Thumbnails
-        (r'^', include('sorl.thumbnail.urls')),
+        #(r'^', include('sorl.thumbnail.urls')),
 )
