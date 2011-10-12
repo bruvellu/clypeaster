@@ -23,7 +23,6 @@ def main_page(request):
 def staging_page(request):
     '''Page where you can look at a random photo and stage it.'''
     if request.method == 'POST':
-        print request.POST
         section = Section.objects.get(id=request.POST['section'])
         # Differentiates between a manual edit and a random sample.
         # If it is a manual edit don't use POST to populate fields.
@@ -36,23 +35,24 @@ def staging_page(request):
     else:
         section = Section.objects.filter(stage=None).order_by('?')[0]
         form = StagingForm(instance=section)
+
     # Some stats just for fun.
-    left = Section.objects.exclude(stage=None).count()
-    total = Section.objects.count()
-    ratio = left / total * 100
+    stats = {}
+    stats['left'] = Section.objects.exclude(stage=None).count()
+    stats['total'] = Section.objects.count()
+    stats['ratio'] = stats['left'] / stats['total'] * 100
+
     variables = RequestContext(request, {
         'section': section,
         'form': form,
-        'ratio': ratio,
-        'left': left,
-        'total': total,
+        'stats': stats,
         })
     return render_to_response('staging.html', variables)
 
 # List of unstaged files
 def unstaged_page(request):
     '''List of unstaged sections.
-    
+
     Sections are in random order. Date and id are hidden to avoid bias during 
     classification of gonadal stage.
     '''
