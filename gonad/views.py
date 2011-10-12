@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from gonad.models import *
 from gonad.forms import *
+from gonad.models import *
+from gonad.stats import *
 
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg
+
+import matplotlib.pyplot as plot
 
 # Main
 def main_page(request):
@@ -100,13 +103,30 @@ def section_page(request, id):
 # Page with tables and graphics
 def stats_page(request):
     '''Gather tables and graphics for analysis.'''
-    # Get specimens.
-    specimens = Specimen.objects.all()
+    # Get tubules.
+    tubules = Tubule.objects.all()
 
-    # Tubule means by collection date.
-    means_by_date = specimens.values('collection_date').annotate(Avg('cross_sections_mean'), Avg('germ_layers_mean'), Avg('gla_indexes_mean'))
+    # Tubules measurements by collection date.
+    tubules_by_date = tubules.values('specimen__collection_date').annotate(
+            Avg('gla_index'),
+            Avg('germ_layer'),
+            Avg('cross_section')
+            )
+
+    # Build plot.
+    x = [data['specimen__collection_date'] for data in tubules_by_date]
+    germ_layer = [data['germ_layer__avg'] for data in tubules_by_date]
+    cross_section = [data['cross_section__avg'] for data in tubules_by_date]
+    # Opções.
+    plot.xlabel(u'Collection date')
+    plot.ylabel(u'Area in µm^2')
+    plot.title(u'Cross section and germ layer area by date')
+    plot.plot(x, germ_layer, label=u'Germ layer area', color='red')
+    plot.plot(x, cross_section, label=u'Cross section area', color='blue')
+    plot.legend(loc='upper left')
+    plot.savefig('tubules_by_date.png')
 
     variables = RequestContext(request, {
-        'means_by_date': means_by_date,
+        'tubules_by_date': tubules_by_date,
         })
     return render_to_response('stats.html', variables)
