@@ -14,6 +14,8 @@ urlpatterns = patterns('',
         (r'^prestaged/$', prestaged_page),
         # List of staged sections.
         (r'^staged/$', staged_page),
+        # Page with stats.
+        (r'^stats/$', stats_page),
 
         # Tubule page.
         url(r'^tubule/(\d+)/$', tubule_page, name='tubule_url'),

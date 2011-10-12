@@ -11,11 +11,8 @@ from django.db.models import Avg
 def main_page(request):
     '''Temporary main page.'''
     specimens = Specimen.objects.all()
-    # Aggregate by date for fun.
-    means_by_date = specimens.values('collection_date').annotate(Avg('cross_sections_mean'), Avg('germ_layers_mean'), Avg('gla_indexes_mean'))
     variables = RequestContext(request, {
         'specimens': specimens,
-        'means_by_date': means_by_date,
         })
     return render_to_response('main.html', variables)
 
@@ -99,3 +96,17 @@ def section_page(request, id):
         'section': section,
         })
     return render_to_response('section.html', variables)
+
+# Page with tables and graphics
+def stats_page(request):
+    '''Gather tables and graphics for analysis.'''
+    # Get specimens.
+    specimens = Specimen.objects.all()
+
+    # Tubule means by collection date.
+    means_by_date = specimens.values('collection_date').annotate(Avg('cross_sections_mean'), Avg('germ_layers_mean'), Avg('gla_indexes_mean'))
+
+    variables = RequestContext(request, {
+        'means_by_date': means_by_date,
+        })
+    return render_to_response('stats.html', variables)
