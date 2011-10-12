@@ -7,16 +7,16 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-static = os.path.join(os.path.dirname(__file__), 'static')
+media = os.path.join(os.path.dirname(__file__), 'media')
 
 urlpatterns = patterns('',
         # Gonads.
         url(r'^', include('analysis.gonad.urls')),
+
         # Admin.
         (r'^admin/', include(admin.site.urls)),
+
         # Site media.
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-            {'document_root': static}),
-        # Thumbnails
-        #(r'^', include('sorl.thumbnail.urls')),
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': media}),
 )
