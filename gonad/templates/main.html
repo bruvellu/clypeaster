@@ -9,7 +9,8 @@
         <th>Collection date</th>
         <th>Location</th>
         <th>Sections</th>
-        <th colspan="4">Tubules</th>
+        <th>Tubules</th>
+        <th>GLA index</th>
     </tr>
     {% for specimen in specimens %}
     <tr>
@@ -18,13 +19,11 @@
         <td>{{ specimen.collection_date }}</td>
         <td>{{ specimen.location }}</td>
         <td>
-            {% if specimen.section_set.all %}
-            <ul>
-                {% for section in specimen.section_set.all %}
-                <li><a href="{{ section.get_absolute_url }}">{{ section.filename|slice:'-16:' }}</a></li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+          {% if specimen.section_set.all %}
+          {% for section in specimen.section_set.all %}
+          <a href="{{ section.get_absolute_url }}">{{ section.filename|slice:'-16:' }}</a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+          {% endif %}
         </td>
         <td>
             {% if specimen.tubule_set.all %}
@@ -35,16 +34,21 @@
                     <th>Germ layer</th>
                     <th>GLA index</th>
                 </tr>
-                {% for tubule in specimen.tubule_set.all %} 
+                {% for tubule in specimen.tubule_set.all %}
                 <tr>
                     <td><a href="{{ tubule.get_absolute_url }}">{{ tubule.filename }}</a></td>
-                    <td>{{ tubule.cross_section }}</td>
-                    <td>{{ tubule.germ_layer }}</td>
-                    <td>{{ tubule.gla_index }}</td>
+                    <td>{{ tubule.cross_section|floatformat:0 }}</td>
+                    <td>{{ tubule.germ_layer|floatformat:0 }}</td>
+                    <td>{{ tubule.gla_index|floatformat:2 }}</td>
                 </tr>
                 {% endfor %}
             </table>
             {% endif %}
+        </td>
+        <td>
+          {% if specimen.gla_indexes_mean %}
+          {{ specimen.gla_indexes_mean|floatformat:2 }} &plusmn; {{ specimen.gla_indexes_sd|floatformat:2 }}
+        {% endif %}
         </td>
     </tr>
 {% endfor %}
