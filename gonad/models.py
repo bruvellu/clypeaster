@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
-from django.signals import calculate_gla, tubule_means
+from gonad.signals import calculate_gla, tubule_means
 from numpy import array, mean, std
 
 
