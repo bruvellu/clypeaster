@@ -8,8 +8,6 @@ from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from django.db.models import Avg
 
-import matplotlib.pyplot as plot
-
 # Main
 def main_page(request):
     '''Temporary main page.'''
@@ -113,18 +111,8 @@ def stats_page(request):
             Avg('cross_section')
             )
 
-    # Build plot.
-    x = [data['specimen__collection_date'] for data in tubules_by_date]
-    germ_layer = [data['germ_layer__avg'] for data in tubules_by_date]
-    cross_section = [data['cross_section__avg'] for data in tubules_by_date]
-    # Opções.
-    plot.xlabel(u'Collection date')
-    plot.ylabel(u'Area in µm^2')
-    plot.title(u'Cross section and germ layer area by date')
-    plot.plot(x, germ_layer, label=u'Germ layer area', color='red')
-    plot.plot(x, cross_section, label=u'Cross section area', color='blue')
-    plot.legend(loc='upper left')
-    plot.savefig('tubules_by_date.png')
+    # Build plots.
+    plot_tubules_by_date(tubules_by_date)
 
     variables = RequestContext(request, {
         'tubules_by_date': tubules_by_date,

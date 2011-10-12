@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block content %}
+
+<h2>Tubule measurements grouped by date</h2>
+
+<div id="thumbnail">
+    <a href="{{ MEDIA_URL }}plots/tubules_by_date.png"><img src="{{ MEDIA_URL }}plots/tubules_by_date.png" width="800" height="600"></a> <a href="{{ MEDIA_URL }}plots/gla_by_date.png"><img src="{{ MEDIA_URL }}plots/gla_by_date.png" width="800" height="600"></a>
+</div>
+
+<table border="1">
+    <tr>
+        <th>Date</th>
+        <th>Cross sections mean</th>
+        <th>Germ layers mean</th>
+        <th>GLA indexes mean</th>
+    </tr>
+    {% for data in tubules_by_date %}
+    <tr>
+        <td>{{ data.specimen__collection_date }}</td>
+        <td>{{ data.cross_section__avg|floatformat:0 }}</td>
+        <td>{{ data.germ_layer__avg|floatformat:0 }}</td>
+        <td>{{ data.gla_index__avg|floatformat:2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}
