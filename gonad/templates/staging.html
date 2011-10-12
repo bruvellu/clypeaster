@@ -3,15 +3,20 @@
 
 {% block content %}
 <h2>Staging area</h2>
-<h3>{{ ratio }}% complete ({{ left }} of {{ total }} histological sections)</h3>
-<div>
+
+<div id="stats">
+  {{ stats.ratio }}% complete ({{ stats.left }} of {{ stats.total }} histological sections)
+</div>
+
+<div id="thumbnail">
     {% thumbnail section.photo "1250" crop="center" as im %}
     <a href="{{ MEDIA_URL }}{{ section.photo }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
     {% empty %}
     [no image]
     {% endthumbnail %}
 </div>
-<div>
+
+<div id="edit-form">
     {{ section.objective }} {% if section.pas %}| PAS{% endif %}
     <form action="." method="post">{% csrf_token %}
         {{ form.as_p }}
