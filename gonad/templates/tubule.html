@@ -2,7 +2,7 @@
 {% load thumbnail %}
 
 {% block content %}
-<h2>Tubule {{ tubule.filename }} ({{ tubule.id }})</h2>
+<h2>Tubule {{ tubule.filename }} (id={{ tubule.id }})</h2>
 <div>
     {% thumbnail tubule.photo "1250" crop="center" as im %}
     <a href="{{ MEDIA_URL }}{{ tubule.photo }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>

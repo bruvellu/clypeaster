@@ -2,7 +2,7 @@
 {% load thumbnail %}
 
 {% block content %}
-<h2>Section {{ section.filename }} ({{ section.id }})</h2>
+<h2>Section {{ section.filename }} (id={{ section.id }})</h2>
 <div>
     {% thumbnail section.photo "1250" crop="center" as im %}
     <a href="{{ MEDIA_URL }}{{ section.photo }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
