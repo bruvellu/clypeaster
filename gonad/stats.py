@@ -12,6 +12,38 @@ from settings import MEDIA_ROOT
 # Cross section area, germ layer area, and GLA index.
 
 
+class TubulePlots:
+    def __init__(self, tubules):
+        self.tubules = tubules
+        self.cross_sections = tubules.values_list('cross_section', flat=True)
+        self.germ_layers = tubules.values_list('germ_layer', flat=True)
+        self.gla_indexes = tubules.values_list('gla_index', flat=True)
+        #TODO Use pandas for numerical processing.
+
+        # Build plots.
+        self.gla_per_cross()
+
+    def gla_per_cross(self):
+        '''Scatter plot with GLA by cross section area.'''
+        # Clear plot.
+        plot.clf()
+
+        # Define paths.
+        png_path = join(MEDIA_ROOT, 'plots/gla_by_cross.png')
+        pdf_path = join(MEDIA_ROOT, 'plots/gla_by_cross.pdf')
+
+        # Define figure to handle the limits better.
+        figure = plot.figure()
+
+        # Plot options.
+        plot.title(u'GLA index against the cross section area')
+
+        # Plot data.
+        plot.scatter(self.cross_sections, self.gla_indexes)
+
+        # Plot save.
+        figure.savefig(png_path)
+        figure.savefig(pdf_path)
 
 def plot_tubules_by_date(data):
     '''Build plot for tubules measurements grouped by date.'''
@@ -70,32 +102,6 @@ def plot_tubules_by_date(data):
     plot.xlim(xmin=date(2006, 12, 01), xmax=date(2007, 12, 01))
     plot.ylim(ymin=0.0, ymax=1.0)
     figure.autofmt_xdate()
-
-    # Plot save.
-    figure.savefig(png_path)
-    figure.savefig(pdf_path)
-
-    # Clear plot.
-    plot.clf()
-
-    # Define paths.
-    png_path = join(MEDIA_ROOT, 'plots/gla_by_cross.png')
-    pdf_path = join(MEDIA_ROOT, 'plots/gla_by_cross.pdf')
-
-    # Data points.
-    cross_section = [value['cross_section__avg'] for value in data]
-    gla_index = [value['gla_index__avg'] for value in data]
-
-    # Define figure to handle the limits better.
-    figure = plot.figure()
-
-    # Plot options.
-    #plot.xlabel(u'Collection date')
-    #plot.ylabel(u'Ratio')
-    plot.title(u'Correlation between tubule size and occupation')
-
-    # Plot data.
-    plot.scatter(gla_index, cross_section)
 
     # Plot save.
     figure.savefig(png_path)

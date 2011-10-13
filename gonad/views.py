@@ -102,7 +102,7 @@ def section_page(request, id):
 def stats_page(request):
     '''Gather tables and graphics for analysis.'''
     # Get tubules.
-    tubules = Tubule.objects.all()
+    tubules = Tubule.objects.exclude(cross_section=None)
 
     # Tubules measurements by collection date.
     tubules_by_date = tubules.values('specimen__collection_date').annotate(
@@ -112,7 +112,8 @@ def stats_page(request):
             )
 
     # Build plots.
-    plot_tubules_by_date(tubules_by_date)
+    #plot_tubules_by_date(tubules_by_date)
+    TubulePlots(tubules)
 
     variables = RequestContext(request, {
         'tubules_by_date': tubules_by_date,
