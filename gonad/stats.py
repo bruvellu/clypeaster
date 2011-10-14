@@ -80,17 +80,18 @@ class TubulePlots:
 
         # Define grouped data.
         avg_data = self.data.groupby('dates').mean()
+        std_data = self.data.groupby('dates').std()
 
         # Define paths.
         png_path = join(MEDIA_ROOT, 'plots/areamean_by_date.png')
         pdf_path = join(MEDIA_ROOT, 'plots/areamean_by_date.pdf')
 
-        #print data.mean()
-        ## Data points.
+        # Data points.
         x = avg_data.index.tolist()
         germ_layer = avg_data['germ_layer'].tolist()
         cross_section = avg_data['cross_section'].tolist()
-        #print germ_layer
+        germ_layer_std = std_data['germ_layer'].tolist()
+        cross_section_std = std_data['cross_section'].tolist()
 
         # Define figure to handle the limits better.
         figure = plt.figure()
@@ -101,10 +102,10 @@ class TubulePlots:
         plt.title(u'Cross section and germ layer area grouped by date')
 
         # Plot data.
-        plt.plot_date(x, cross_section, fmt='-', label=u'Cross section area', color='blue')
-        plt.plot_date(x, germ_layer, fmt='-', label=u'Germ layer area', color='red')
+        plt.errorbar(x, cross_section, yerr=cross_section_std, fmt='-', label=u'Cross section area', color='blue')
+        plt.errorbar(x, germ_layer, yerr=germ_layer_std, fmt='-', label=u'Germ layer area', color='red')
         # Insert caption.
-        plt.legend(loc='upper right')
+        plt.legend(loc='best')
         # Define x limits.
         plt.xlim(xmin=date(2006, 12, 01), xmax=date(2007, 12, 01))
         # Auto adjust figure paddings.
@@ -121,6 +122,7 @@ class TubulePlots:
 
         # Define grouped data.
         avg_data = self.data.groupby('dates').mean()
+        std_data = self.data.groupby('dates').std()
 
         # Define paths.
         png_path = join(MEDIA_ROOT, 'plots/gla_by_date.png')
@@ -129,6 +131,7 @@ class TubulePlots:
         # Data points.
         x = avg_data.index.tolist()
         gla_index = avg_data['gla_index'].tolist()
+        gla_std = std_data['gla_index'].tolist()
 
         # Define figure to handle the limits better.
         figure = plt.figure()
@@ -139,7 +142,7 @@ class TubulePlots:
         plt.title(u'GLA index grouped by date')
 
         # Plot data.
-        plt.plot_date(x, gla_index, fmt='-', label=u'GLA index', color='blue')
+        plt.errorbar(x, gla_index, yerr=gla_std, fmt='-', label=u'GLA index', color='blue')
         plt.xlim(xmin=date(2006, 12, 01), xmax=date(2007, 12, 01))
         plt.ylim(ymin=0.0, ymax=1.0)
         figure.autofmt_xdate()
