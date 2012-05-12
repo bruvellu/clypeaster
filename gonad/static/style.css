@@ -2,6 +2,21 @@ h1,h2,h3,h4,h5,h6 {
     clear:both;
 }
 
+nav ul li {
+  display:inline;
+  position:relative;
+  float:left;
+  margin:4px;
+  padding:4px;
+  font-family:sans;
+  font-weight:bold;
+  text-transform:uppercase;
+}
+
+nav ul li li {
+  font-weight:normal;
+}
+
 .thumb {
     float:left;
     margin:5px;
