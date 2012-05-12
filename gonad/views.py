@@ -113,14 +113,18 @@ def tubules_results(request):
     # Plot areamean_by_date.
     areamean_by_date = tubules_stats.plot_areamean_by_date()
 
-    # Plot gla_by_cross.
+    # Scatter gla_by_cross.
     gla_by_cross = tubules_stats.scatter_gla_by_cross()
+
+    # Scatter gla_by_weight.
+    gla_by_weight = tubules_stats.scatter_gla_by_weight()
 
     variables = RequestContext(request, {
         'tubules_data': tubules_stats.data,
         'gla_by_date': gla_by_date,
         'areamean_by_date': areamean_by_date,
         'gla_by_cross': gla_by_cross,
+        'gla_by_weight': gla_by_weight,
         })
 
     return render_to_response('tubules_results.html', variables)

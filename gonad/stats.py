@@ -31,16 +31,20 @@ class TubulePlots:
         # Get objects.
         ids = tubules.values_list('id', flat=True)
         cross_sections = tubules.values_list('cross_section', flat=True)
-        germ_layer = tubules.values_list('germ_layer', flat=True)
+        germ_layers = tubules.values_list('germ_layer', flat=True)
         gla_indexes = tubules.values_list('gla_index', flat=True)
         dates = tubules.values_list('specimen__collection_date', flat=True)
+        genders = tubules.values_list('specimen__gender', flat=True)
+        gonad_weights = tubules.values_list('specimen__gonad_weight', flat=True)
 
         # Instantiate dictionary for DataFrame.
         data_dic = {
                 'cross_section': cross_sections,
-                'germ_layer': germ_layer,
+                'germ_layer': germ_layers,
                 'gla_index': gla_indexes,
                 'date': dates,
+                'gender': genders,
+                'gonad_weight': gonad_weights,
                 }
 
         # Create DataFrame for tubule data.
@@ -85,8 +89,61 @@ class TubulePlots:
 
         # Create data frame.
         plot_data_dic = {
-                'cross_sections': cross_sections,
-                'gla_indexes': gla_indexes,
+                'cross_section': cross_sections,
+                'gla_index': gla_indexes,
+                }
+        plot_data = DataFrame(plot_data_dic)
+
+        # Write CSV.
+        plot_data.to_csv(csv_path)
+
+        # Create plot object.
+        plot = {
+                'data': plot_data,
+                'png': png_file,
+                'pdf': pdf_file,
+                'csv': csv_file,
+                }
+
+        return plot
+
+    def scatter_gla_by_weight(self):
+        '''Scatter plot with GLA by gonad weight.'''
+        # Define plot name.
+        plot_name = 'gla_by_weight'
+
+        # Clear plot.
+        plt.clf()
+
+        # Define data.
+        gonad_weights = self.data['gonad_weight'].tolist()
+        gla_indexes = self.data['gla_index'].tolist()
+
+        # Define paths.
+        png_file = 'plots/%s.png' % plot_name
+        png_path = join(MEDIA_ROOT, png_file)
+        pdf_file = 'plots/%s.pdf' % plot_name
+        pdf_path = join(MEDIA_ROOT, pdf_file)
+        csv_file = 'plots/%s.csv' % plot_name
+        csv_path = join(MEDIA_ROOT, csv_file)
+
+        # Define figure to handle the limits better.
+        figure = plt.figure()
+
+        # Plot options.
+        plt.title(u'GLA index against gonad weight')
+
+        # Plot data.
+        plt.scatter(gonad_weights, gla_indexes)
+
+        # Plot save.
+        figure.savefig(png_path)
+        figure.savefig(pdf_path)
+
+        # Create data frame.
+        plot_data_dic = {
+                'gonad_weight': gonad_weights,
+                'gla_index': gla_indexes,
                 }
         plot_data = DataFrame(plot_data_dic)
 
