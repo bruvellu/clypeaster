@@ -99,8 +99,8 @@ def section_page(request, id):
     return render_to_response('section.html', variables)
 
 # Page with tables and graphics
-def stats_page(request):
-    '''Gather tables and graphics for analysis.'''
+def tubules_results(request):
+    '''Results related to the measurements of the tubules.'''
     # Get tubules.
     tubules = Tubule.objects.exclude(cross_section=None)
 
@@ -118,4 +118,4 @@ def stats_page(request):
     variables = RequestContext(request, {
         'tubules_by_date': tubules_by_date,
         })
-    return render_to_response('stats.html', variables)
+    return render_to_response('tubules_results.html', variables)

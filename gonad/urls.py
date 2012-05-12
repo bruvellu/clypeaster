@@ -6,6 +6,7 @@ from gonad.views import *
 urlpatterns = patterns('',
         # Home.
         (r'^$', main_page),
+
         # Where you stage gonads.
         (r'^staging/$', staging_page),
         # List of unstaged sections.
@@ -14,8 +15,10 @@ urlpatterns = patterns('',
         (r'^prestaged/$', prestaged_page),
         # List of staged sections.
         (r'^staged/$', staged_page),
-        # Page with stats.
-        (r'^stats/$', stats_page),
+
+        # Results
+        # Tubules measurements.
+        (r'^results/tubules/$', tubules_results),
 
         # Tubule page.
         url(r'^tubule/(\d+)/$', tubule_page, name='tubule_url'),
