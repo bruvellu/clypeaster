@@ -43,10 +43,12 @@ class TubulePlots:
                 'date': dates,
                 }
 
-        #TODO Write csv with data frame for history.
-
         # Create DataFrame for tubule data.
         self.data = DataFrame(data_dic, index=ids)
+
+        # Write CSV
+        csv_path = join(MEDIA_ROOT, 'plots/tubules_data.csv')
+        self.data.to_csv(csv_path)
 
     def scatter_gla_by_cross(self):
         '''Scatter plot with GLA by cross section area.'''
@@ -81,14 +83,17 @@ class TubulePlots:
         figure.savefig(png_path)
         figure.savefig(pdf_path)
 
-        # Return data frame.
+        # Create data frame.
         plot_data_dic = {
                 'cross_sections': cross_sections,
                 'gla_indexes': gla_indexes,
                 }
-
         plot_data = DataFrame(plot_data_dic)
 
+        # Write CSV.
+        plot_data.to_csv(csv_path)
+
+        # Create plot object.
         plot = {
                 'data': plot_data,
                 'png': png_file,
@@ -144,18 +149,19 @@ class TubulePlots:
         figure.savefig(png_path)
         figure.savefig(pdf_path)
 
-        #TODO Write CSV.
-
-        # Return data frame.
+        # Create data frame.
         plot_data_dic = {
                 'germ_layer': germ_layer,
                 'cross_section': cross_section,
                 'germ_layer_std': germ_layer_std,
                 'cross_section_std': cross_section_std,
                 }
-
         plot_data = DataFrame(plot_data_dic, index=x)
 
+        # Write CSV.
+        plot_data.to_csv(csv_path)
+
+        # Create plot object.
         plot = {
                 'data': plot_data,
                 'png': png_file,
@@ -205,16 +211,17 @@ class TubulePlots:
         figure.savefig(png_path)
         figure.savefig(pdf_path)
 
-        #TODO Write CSV.
-
-        # Return data frame.
+        # Create data frame.
         plot_data_dic = {
                 'gla_avg': gla_avg,
                 'gla_std': gla_std,
                 }
-
         plot_data = DataFrame(plot_data_dic, index=x)
 
+        # Write CSV.
+        plot_data.to_csv(csv_path)
+
+        # Create plot object.
         plot = {
                 'data': plot_data,
                 'png': png_file,
