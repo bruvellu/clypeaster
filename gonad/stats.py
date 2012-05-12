@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date
-from numpy import array, mean, std
+#from numpy import array, mean, std
 from os import remove
 from os.path import join
 from pandas import *
