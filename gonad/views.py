@@ -104,18 +104,23 @@ def tubules_results(request):
     # Get tubules.
     tubules = Tubule.objects.exclude(cross_section=None)
 
-    # Tubules measurements by collection date.
-    tubules_by_date = tubules.values('specimen__collection_date').annotate(
-            Avg('gla_index'),
-            Avg('germ_layer'),
-            Avg('cross_section')
-            )
+    # Instantiate plots.
+    tubules_stats = TubulePlots(tubules)
 
-    # Build plots.
-    #plot_tubules_by_date(tubules_by_date)
-    TubulePlots(tubules)
+    # Plot gla_by_date.
+    gla_by_date = tubules_stats.plot_gla_by_date()
+
+    # Plot areamean_by_date.
+    areamean_by_date = tubules_stats.plot_areamean_by_date()
+
+    # Plot gla_by_cross.
+    gla_by_cross = tubules_stats.scatter_gla_by_cross()
 
     variables = RequestContext(request, {
-        'tubules_by_date': tubules_by_date,
+        'tubules_data': tubules_stats.data,
+        'gla_by_date': gla_by_date,
+        'areamean_by_date': areamean_by_date,
+        'gla_by_cross': gla_by_cross,
         })
+
     return render_to_response('tubules_results.html', variables)

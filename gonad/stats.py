@@ -19,14 +19,12 @@ class TubulePlots:
         # Build data frame and instantiate "self.data".
         self.build_data_frame(self.tubules)
 
-        # Define grouped data by date.
-        self.avg_by_date = self.data.groupby('dates').mean()
-        self.std_by_date = self.data.groupby('dates').std()
+        # Group data by date.
+        self.data_by_date = self.data.groupby('date')
 
-        # Build plots.
-        self.scatter_gla_by_cross()
-        self.plot_areamean_by_date()
-        self.plot_gla_by_date()
+        # Define grouped data by date.
+        self.avg_by_date = self.data_by_date.mean()
+        self.std_by_date = self.data_by_date.std()
 
     def build_data_frame(self, tubules):
         '''Build data frames for tubules plots using pandas.'''
@@ -42,7 +40,7 @@ class TubulePlots:
                 'cross_section': cross_sections,
                 'germ_layer': germ_layer,
                 'gla_index': gla_indexes,
-                'dates': dates,
+                'date': dates,
                 }
 
         #TODO Write csv with data frame for history.
@@ -63,9 +61,12 @@ class TubulePlots:
         gla_indexes = self.data['gla_index'].tolist()
 
         # Define paths.
-        png_path = join(MEDIA_ROOT, 'plots/%s.png' % plot_name)
-        pdf_path = join(MEDIA_ROOT, 'plots/%s.pdf' % plot_name)
-        csv_path = join(MEDIA_ROOT, 'plots/%s.csv' % plot_name)
+        png_file = 'plots/%s.png' % plot_name
+        png_path = join(MEDIA_ROOT, png_file)
+        pdf_file = 'plots/%s.pdf' % plot_name
+        pdf_path = join(MEDIA_ROOT, pdf_file)
+        csv_file = 'plots/%s.csv' % plot_name
+        csv_path = join(MEDIA_ROOT, csv_file)
 
         # Define figure to handle the limits better.
         figure = plt.figure()
@@ -80,6 +81,23 @@ class TubulePlots:
         figure.savefig(png_path)
         figure.savefig(pdf_path)
 
+        # Return data frame.
+        plot_data_dic = {
+                'cross_sections': cross_sections,
+                'gla_indexes': gla_indexes,
+                }
+
+        plot_data = DataFrame(plot_data_dic)
+
+        plot = {
+                'data': plot_data,
+                'png': png_file,
+                'pdf': pdf_file,
+                'csv': csv_file,
+                }
+
+        return plot
+
     def plot_areamean_by_date(self):
         '''Build plot for tubules measurements grouped by date.'''
 
@@ -90,9 +108,12 @@ class TubulePlots:
         plt.clf()
 
         # Define paths.
-        png_path = join(MEDIA_ROOT, 'plots/%s.png' % plot_name)
-        pdf_path = join(MEDIA_ROOT, 'plots/%s.pdf' % plot_name)
-        csv_path = join(MEDIA_ROOT, 'plots/%s.csv' % plot_name)
+        png_file = 'plots/%s.png' % plot_name
+        png_path = join(MEDIA_ROOT, png_file)
+        pdf_file = 'plots/%s.pdf' % plot_name
+        pdf_path = join(MEDIA_ROOT, pdf_file)
+        csv_file = 'plots/%s.csv' % plot_name
+        csv_path = join(MEDIA_ROOT, csv_file)
 
         # Data points.
         x = self.avg_by_date.index.tolist()
@@ -125,7 +146,24 @@ class TubulePlots:
 
         #TODO Write CSV.
 
-        #TODO Return data frame.
+        # Return data frame.
+        plot_data_dic = {
+                'germ_layer': germ_layer,
+                'cross_section': cross_section,
+                'germ_layer_std': germ_layer_std,
+                'cross_section_std': cross_section_std,
+                }
+
+        plot_data = DataFrame(plot_data_dic, index=x)
+
+        plot = {
+                'data': plot_data,
+                'png': png_file,
+                'pdf': pdf_file,
+                'csv': csv_file,
+                }
+
+        return plot
 
     def plot_gla_by_date(self):
         '''Build plot for gla indexes grouped by date.'''
@@ -137,9 +175,12 @@ class TubulePlots:
         plt.clf()
 
         # Define paths.
-        png_path = join(MEDIA_ROOT, 'plots/%s.png' % plot_name)
-        pdf_path = join(MEDIA_ROOT, 'plots/%s.pdf' % plot_name)
-        csv_path = join(MEDIA_ROOT, 'plots/%s.csv' % plot_name)
+        png_file = 'plots/%s.png' % plot_name
+        png_path = join(MEDIA_ROOT, png_file)
+        pdf_file = 'plots/%s.pdf' % plot_name
+        pdf_path = join(MEDIA_ROOT, pdf_file)
+        csv_file = 'plots/%s.csv' % plot_name
+        csv_path = join(MEDIA_ROOT, csv_file)
 
         # Data points.
         x = self.avg_by_date.index.tolist()
@@ -166,8 +207,25 @@ class TubulePlots:
 
         #TODO Write CSV.
 
-        #TODO Return data frame.
+        # Return data frame.
+        plot_data_dic = {
+                'gla_avg': gla_avg,
+                'gla_std': gla_std,
+                }
+
+        plot_data = DataFrame(plot_data_dic, index=x)
+
+        plot = {
+                'data': plot_data,
+                'png': png_file,
+                'pdf': pdf_file,
+                'csv': csv_file,
+                }
+
+        return plot
+
 
 #TODO Correlation between GLA and tubule area. Does GLA vary with tubule size? 
 # If yes, how to normalize the values?
 # Hint: by using the residues from regression.
+#TODO Do statistics.

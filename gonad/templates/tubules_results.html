@@ -5,31 +5,33 @@
 
 <h2>Tubule measurements grouped by date</h2>
 
-<div id="thumbnail">
+<h3>Area of cross section and germ layer</h3>
 
-  <a href="{{ MEDIA_URL }}plots/areamean_by_date.png"><img src="{{ MEDIA_URL }}plots/areamean_by_date.png" width="800" height="600"></a>
+<a href="{{ MEDIA_URL }}{{ areamean_by_date.png }}"><img src="{{ MEDIA_URL }}{{ areamean_by_date.png }}" width="800" height="600"></a>
 
-  <a href="{{ MEDIA_URL }}plots/gla_by_date.png"><img src="{{ MEDIA_URL }}plots/gla_by_date.png" width="800" height="600"></a>
+<pre>
+{{ areamean_by_date.data }}
+</pre>
 
-  <a href="{{ MEDIA_URL }}plots/gla_by_cross.png"><img src="{{ MEDIA_URL }}plots/gla_by_cross.png" width="800" height="600"></a>
-</div>
+<h3>GLA index</h3>
 
-<table border="1">
-    <tr>
-        <th>Date</th>
-        <th>Cross sections mean</th>
-        <th>Germ layers mean</th>
-        <th>GLA indexes mean</th>
-    </tr>
-    {% for data in tubules_by_date %}
-    <tr>
-        <td>{{ data.specimen__collection_date }}</td>
-        <td>{{ data.cross_section__avg|floatformat:0 }}</td>
-        <td>{{ data.germ_layer__avg|floatformat:0 }}</td>
-        <td>{{ data.gla_index__avg|floatformat:2 }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<a href="{{ MEDIA_URL }}{{ gla_by_date.png }}"><img src="{{ MEDIA_URL }}{{ gla_by_date.png }}" width="800" height="600"></a>
 
+<pre>
+{{ gla_by_date.data }}
+</pre>
+
+<h3>GLA by cross section</h3>
+
+<a href="{{ MEDIA_URL }}{{ gla_by_cross.png }}"><img src="{{ MEDIA_URL }}{{ gla_by_cross.png }}" width="800" height="600"></a>
+
+<pre>
+{{ gla_by_cross.data }}
+</pre>
+
+<h3>Raw data</h3>
+<pre>
+{{ tubules_data }}
+</pre>
 
 {% endblock %}
