@@ -160,6 +160,112 @@ class TubulePlots:
 
         return plot
 
+    def scatter_cross_by_weight(self):
+        '''Scatter plot with cross section by gonad weight.'''
+        # Define plot name.
+        plot_name = 'cross_by_weight'
+
+        # Clear plot.
+        plt.clf()
+
+        # Define data.
+        gonad_weights = self.data['gonad_weight'].tolist()
+        cross_sections = self.data['cross_section'].tolist()
+
+        # Define paths.
+        png_file = 'plots/%s.png' % plot_name
+        png_path = join(MEDIA_ROOT, png_file)
+        pdf_file = 'plots/%s.pdf' % plot_name
+        pdf_path = join(MEDIA_ROOT, pdf_file)
+        csv_file = 'plots/%s.csv' % plot_name
+        csv_path = join(MEDIA_ROOT, csv_file)
+
+        # Define figure to handle the limits better.
+        figure = plt.figure()
+
+        # Plot options.
+        plt.title(u'Cross section area against gonad weight')
+
+        # Plot data.
+        plt.scatter(gonad_weights, cross_sections)
+
+        # Plot save.
+        figure.savefig(png_path)
+        figure.savefig(pdf_path)
+
+        # Create data frame.
+        plot_data_dic = {
+                'gonad_weight': gonad_weights,
+                'cross_section': cross_sections,
+                }
+        plot_data = DataFrame(plot_data_dic)
+
+        # Write CSV.
+        plot_data.to_csv(csv_path)
+
+        # Create plot object.
+        plot = {
+                'data': plot_data,
+                'png': png_file,
+                'pdf': pdf_file,
+                'csv': csv_file,
+                }
+
+        return plot
+
+    def scatter_germ_by_weight(self):
+        '''Scatter plot with germ layer by gonad weight.'''
+        # Define plot name.
+        plot_name = 'germ_by_weight'
+
+        # Clear plot.
+        plt.clf()
+
+        # Define data.
+        gonad_weights = self.data['gonad_weight'].tolist()
+        germ_layers = self.data['germ_layer'].tolist()
+
+        # Define paths.
+        png_file = 'plots/%s.png' % plot_name
+        png_path = join(MEDIA_ROOT, png_file)
+        pdf_file = 'plots/%s.pdf' % plot_name
+        pdf_path = join(MEDIA_ROOT, pdf_file)
+        csv_file = 'plots/%s.csv' % plot_name
+        csv_path = join(MEDIA_ROOT, csv_file)
+
+        # Define figure to handle the limits better.
+        figure = plt.figure()
+
+        # Plot options.
+        plt.title(u'Germ layer area against gonad weight')
+
+        # Plot data.
+        plt.scatter(gonad_weights, germ_layers)
+
+        # Plot save.
+        figure.savefig(png_path)
+        figure.savefig(pdf_path)
+
+        # Create data frame.
+        plot_data_dic = {
+                'gonad_weight': gonad_weights,
+                'germ_layer': germ_layers,
+                }
+        plot_data = DataFrame(plot_data_dic)
+
+        # Write CSV.
+        plot_data.to_csv(csv_path)
+
+        # Create plot object.
+        plot = {
+                'data': plot_data,
+                'png': png_file,
+                'pdf': pdf_file,
+                'csv': csv_file,
+                }
+
+        return plot
+
     def plot_areamean_by_date(self):
         '''Build plot for tubules measurements grouped by date.'''
 
