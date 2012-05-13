@@ -63,9 +63,13 @@ def unstaged_page(request):
 # List of pre-staged files
 def prestaged_page(request):
     '''List of prestaged sections.'''
-    sections = Section.objects.filter(stage=None).exclude(pre_stage='')
+    sections_male = Section.objects.filter(
+            stage=None, specimen__gender='M').exclude(pre_stage='')
+    sections_female = Section.objects.filter(
+            stage=None, specimen__gender='F').exclude(pre_stage='')
     variables = RequestContext(request, {
-        'sections': sections,
+        'sections_male': sections_male,
+        'sections_female': sections_female,
         'status': u'prestaged',
         })
     return render_to_response('sections.html', variables)
@@ -73,9 +77,11 @@ def prestaged_page(request):
 # List of staged files
 def staged_page(request):
     '''List of staged sections.'''
-    sections = Section.objects.exclude(stage=None)
+    sections_male = Section.objects.filter(specimen__gender='M').exclude(stage=None)
+    sections_female = Section.objects.filter(specimen__gender='F').exclude(stage=None)
     variables = RequestContext(request, {
-        'sections': sections,
+        'sections_male': sections_male,
+        'sections_female': sections_female,
         'status': u'staged',
         })
     return render_to_response('sections.html', variables)
@@ -119,12 +125,20 @@ def tubules_results(request):
     # Scatter gla_by_weight.
     gla_by_weight = tubules_stats.scatter_gla_by_weight()
 
+    # Scatter cross_by_weight.
+    cross_by_weight = tubules_stats.scatter_cross_by_weight()
+
+    # Scatter germ_by_weight.
+    germ_by_weight = tubules_stats.scatter_germ_by_weight()
+
     variables = RequestContext(request, {
         'tubules_data': tubules_stats.data,
         'gla_by_date': gla_by_date,
         'areamean_by_date': areamean_by_date,
         'gla_by_cross': gla_by_cross,
         'gla_by_weight': gla_by_weight,
+        'cross_by_weight': cross_by_weight,
+        'germ_by_weight': germ_by_weight,
         })
 
     return render_to_response('tubules_results.html', variables)

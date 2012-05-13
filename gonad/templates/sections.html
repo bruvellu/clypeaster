@@ -2,35 +2,75 @@
 {% load thumbnail %}
 
 {% block content %}
-<h2>{{ status|capfirst }} sections</h2>
-{% if sections %}
 
-{% if status == 'prestaged' %}
-{% regroup sections by pre_stage as groups %}
+<h2>Male {{ status|capfirst }} sections</h2>
+
+{% if sections_male %}
+
+  {% if status == 'prestaged' %}
+    {% regroup sections_male by pre_stage as groups %}
+  {% else %}
+    {% regroup sections_male by stage as groups %}
+  {% endif %}
+
+  {% for stage in groups %}
+
+    <h3>{{ stage.grouper }}</h3>
+
+    {% for section in stage.list %}
+      <div class="thumb">
+          {% thumbnail section.photo "200x150" crop="center" as im %}
+          <a rel="section" href="{{ MEDIA_URL }}{{ section.photo }}" title="{{ section.filename }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ section.filename }}" title="{{ section.notes }}"></a>
+          {% empty %}
+          [no image]
+          {% endthumbnail %}
+          <form action="/staging/" method="post">{% csrf_token %}
+              <input type="hidden" value="{{ section.id }}" name="section" />
+              <input type="hidden" value="on" name="edit" />
+              <input type="submit" value="Edit" />
+          </form>
+      </div>
+    {% endfor %}
+
+  {% endfor %}
+
 {% else %}
-{% regroup sections by stage as groups %}
+No {{ status }} sections of males!
 {% endif %}
 
-{% for stage in groups %}
-<h3>{{ stage.grouper }}</h3>
-{% for section in stage.list %}
-<div class="thumb">
-    {% thumbnail section.photo "200x150" crop="center" as im %}
-    <a rel="section" href="{{ MEDIA_URL }}{{ section.photo }}" title="{{ section.filename }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ section.filename }}" title="{{ section.notes }}"></a>
-    {% empty %}
-    [no image]
-    {% endthumbnail %}
-    <form action="/staging/" method="post">{% csrf_token %}
-        <input type="hidden" value="{{ section.id }}" name="section" />
-        <input type="hidden" value="on" name="edit" />
-        <input type="submit" value="Edit" />
-    </form>
-</div>
-{% endfor %}
-{% endfor %}
+<h2>Female {{ status|capfirst }} sections</h2>
+
+{% if sections_female %}
+
+  {% if status == 'prestaged' %}
+    {% regroup sections_female by pre_stage as groups %}
+  {% else %}
+    {% regroup sections_female by stage as groups %}
+  {% endif %}
+
+  {% for stage in groups %}
+
+    <h3>{{ stage.grouper }}</h3>
+
+    {% for section in stage.list %}
+      <div class="thumb">
+          {% thumbnail section.photo "200x150" crop="center" as im %}
+          <a rel="section" href="{{ MEDIA_URL }}{{ section.photo }}" title="{{ section.filename }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ section.filename }}" title="{{ section.notes }}"></a>
+          {% empty %}
+          [no image]
+          {% endthumbnail %}
+          <form action="/staging/" method="post">{% csrf_token %}
+              <input type="hidden" value="{{ section.id }}" name="section" />
+              <input type="hidden" value="on" name="edit" />
+              <input type="submit" value="Edit" />
+          </form>
+      </div>
+    {% endfor %}
+
+  {% endfor %}
 
 {% else %}
-No {{ status }} sections!
+No {{ status }} sections of females!
 {% endif %}
 
 {% endblock %}
