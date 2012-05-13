@@ -39,10 +39,10 @@ def staging_page(request):
     stats['total'] = Section.objects.count()
     # Prestaged.
     stats['prestaged'] = Section.objects.exclude(pre_stage='').count()
-    stats['prestaged_ratio'] = stats['prestaged'] / stats['total'] * float(100)
+    stats['prestaged_ratio'] = stats['prestaged'] / float(stats['total']) * 100
     # Staged.
     stats['staged'] = Section.objects.exclude(stage=None).count()
-    stats['staged_ratio'] = stats['staged'] / stats['total'] * float(100)
+    stats['staged_ratio'] = stats['staged'] / float(stats['total']) * 100
 
     variables = RequestContext(request, {
         'section': section,
