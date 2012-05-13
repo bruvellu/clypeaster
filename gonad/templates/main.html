@@ -54,25 +54,4 @@
 {% endfor %}
 </table>
 
-<h2>Data grouped by date</h2>
-
-<table border="1">
-    <tr>
-        <th>Date</th>
-        <th>Cross sections mean</th>
-        <th>Germ layers mean</th>
-        <th>GLA indexes mean</th>
-    </tr>
-    {% for avg in means_by_date %}
-    {% if avg.cross_sections_mean__avg %}
-    <tr>
-        <td>{{ avg.collection_date }}</td>
-        <td>{{ avg.cross_sections_mean__avg|floatformat:0 }}</td>
-        <td>{{ avg.germ_layers_mean__avg|floatformat:0 }}</td>
-        <td>{{ avg.gla_indexes_mean__avg|floatformat:2 }}</td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-</table>
-
 {% endblock %}
