@@ -5,7 +5,9 @@
 <h2>Staging area</h2>
 
 <div id="stats">
-  {{ stats.ratio }}% complete ({{ stats.left }} of {{ stats.total }} histological sections)
+  <strong>Prestaged:</strong> {{ stats.prestaged_ratio }}% complete ({{ stats.prestaged }} sections)
+  <strong>Staged:</strong> {{ stats.staged_ratio }}% complete ({{ stats.staged }} sections)
+  <strong>Total:</strong> {{ stats.total }} histological sections
 </div>
 
 <div id="thumbnail">
