@@ -14,7 +14,7 @@
     <strong>Filename:</strong> {{ tubule.filename }}<br>
     <strong>Objective:</strong> {{ tubule.objective }}<br>
     <strong>Is great:</strong> {{ tubule.isgreat }}<br>
-    <strong>Specimen:</strong> {{ tubule.specimen }}<br>
+    <strong>Specimen:</strong> <a href="{{ tubule.specimen.get_absolute_url }}">{{ tubule.specimen }}</a><br>
     <strong>Germ layer index:</strong> {{ tubule.gla_index|floatformat:2 }}<br>
     <strong>Cross section area:</strong> {{ tubule.cross_section|floatformat:0 }} µm<sup>2</sup><br>
     <strong>Germ layer area:</strong> {{ tubule.germ_layer|floatformat:0 }} µm<sup>2</sup>
