@@ -67,10 +67,8 @@ def unstaged_page(request):
 # List of pre-staged files
 def prestaged_page(request):
     '''List of prestaged sections.'''
-    sections_male = Section.objects.filter(
-            stage=None, specimen__gender='M').exclude(pre_stage='')
-    sections_female = Section.objects.filter(
-            stage=None, specimen__gender='F').exclude(pre_stage='')
+    sections_male = Section.objects.filter(stage=None, specimen__gender='M').exclude(pre_stage='').order_by('pre_stage')
+    sections_female = Section.objects.filter(stage=None, specimen__gender='F').exclude(pre_stage='').order_by('pre_stage')
     variables = RequestContext(request, {
         'sections_male': sections_male,
         'sections_female': sections_female,
@@ -81,8 +79,8 @@ def prestaged_page(request):
 # List of staged files
 def staged_page(request):
     '''List of staged sections.'''
-    sections_male = Section.objects.filter(specimen__gender='M').exclude(stage=None)
-    sections_female = Section.objects.filter(specimen__gender='F').exclude(stage=None)
+    sections_male = Section.objects.filter(specimen__gender='M').exclude(stage=None).order_by('stage')
+    sections_female = Section.objects.filter(specimen__gender='F').exclude(stage=None).order_by('stage')
     variables = RequestContext(request, {
         'sections_male': sections_male,
         'sections_female': sections_female,
