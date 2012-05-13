@@ -14,7 +14,7 @@
     </tr>
     {% for specimen in specimens %}
     <tr>
-        <td>{{ specimen }}</td>
+      <td><a href="{{ specimen.get_absolute_url }}">{{ specimen }}</a></td>
         <td>{{ specimen.gender }}</td>
         <td>{{ specimen.collection_date }}</td>
         <td>{{ specimen.location }}</td>

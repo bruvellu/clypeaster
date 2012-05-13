@@ -24,4 +24,6 @@ urlpatterns = patterns('',
         url(r'^tubule/(\d+)/$', tubule_page, name='tubule_url'),
         # Section page.
         url(r'^section/(\d+)/$', section_page, name='section_url'),
+        # Specimen page.
+        url(r'^specimen/(\d+)/$', specimen_page, name='specimen_url'),
 )

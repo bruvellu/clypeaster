@@ -84,6 +84,10 @@ class Specimen(models.Model):
         else:
             return self.identifier
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('specimen_url', [str(self.id)])
+
 
 class Stage(models.Model):
     '''Gonadal stage.'''

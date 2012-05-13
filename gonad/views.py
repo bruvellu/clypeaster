@@ -106,6 +106,19 @@ def section_page(request, id):
         })
     return render_to_response('section.html', variables)
 
+# Page of a specimen
+def specimen_page(request, id):
+    '''Standard page for a tubule.'''
+    specimen = Specimen.objects.get(id=id)
+    sections = specimen.section_set.order_by('pre_stage')
+    tubules = specimen.tubule_set.all()
+    variables = RequestContext(request, {
+        'specimen': specimen,
+        'sections': sections,
+        'tubules': tubules,
+        })
+    return render_to_response('specimen.html', variables)
+
 # Page with tables and graphics
 def tubules_results(request):
     '''Results related to the measurements of the tubules.'''
