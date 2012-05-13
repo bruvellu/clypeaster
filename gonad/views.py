@@ -31,7 +31,7 @@ def staging_page(request):
             if form.is_valid():
                 form.save()
     else:
-        section = Section.objects.filter(stage=None).order_by('?')[0]
+        section = Section.objects.filter(pre_stage='').order_by('?')[0]
         form = StagingForm(instance=section)
 
     # Some stats just for fun.
