@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block content %}
+
+<h2>Specimen {{ specimen.identifier }} (id={{ specimen.id }})</h2>
+
+<div>
+    <strong>Identifier:</strong> {{ specimen.identifier }}<br>
+    <strong>Collection date:</strong> {{ specimen.collection_date }}<br>
+    <strong>Location:</strong> {{ specimen.location }}<br>
+    <strong>Gender:</strong> {{ specimen.gender }}<br>
+    <strong>Weight:</strong> {{ specimen.weight }}<br>
+    <strong>Gonad weight:</strong> {{ specimen.gonad_weight }}<br>
+    <strong>Consensus stage:</strong> {{ specimen.consensus_stage }}<br>
+    <strong>Cross sections mean/std:</strong> {{ specimen.cross_sections_mean }} ± {{ specimen.cross_sections_sd }} µm<sup>2</sup><br>
+    <strong>Germ layers mean/std:</strong> {{ specimen.germ_layers_mean }} ± {{ specimen.germ_layers_sd }} µm<sup>2</sup><br>
+    <strong>GLA indexes mean/std:</strong> {{ specimen.gla_indexes_mean }} ± {{ specimen.gla_indexes_sd }}<br>
+
+</div>
+
+<h3>Sections</h3>
+
+    {% regroup sections by pre_stage as groups %}
+
+    {% include 'thumbs.html' with groups=groups %}
+
+<h3>Tubules</h3>
+
+{% for tubule in tubules %}
+<a href="{{ tubule.get_absolute_url }}">{{ tubule.filename }}</a>{% if not forloop.last %}, {% endif %}
+{% endfor %}
+
+{% endblock %}
